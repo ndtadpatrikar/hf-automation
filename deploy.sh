@@ -17,7 +17,6 @@ logger 'starting from HF'$from_HF;
 logger 'deploying HF '$to_HF;
 declare -A pathMap;
 
-
 for((i=$from_HF;i<=$to_HF;i++))
 do
 		echo 'HF'$i;
@@ -29,34 +28,6 @@ do
 		   props["$key"]="$value"
 		done < $file
 
-			if [ ${props["deploy.action.AnalyticsContainer"]} = true ]
-			then
-				logger 'Found deploy.action.AnalyticsContainer=true for HF'$i;
-				pathMap[AnalyticsContainer]='HF'$i;
-			else
-				pathMap[AnalyticsContainer]="NA";
-			fi
-			if [ ${props["deploy.action.ClientAdapter"]} = true ]
-			then
-				logger 'Found deploy.action.ClientAdapter=true for HF'$i;
-				pathMap[ClientAdapter]='HF'$i;
-			else
-				pathMap[ClientAdapter]="NA";
-			fi
-			if [ ${props["deploy.action.Persistence"]} = true ]
-			then
-				logger 'Found deploy.action.Persistence=true for HF'$i;
-				pathMap[Persistence]='HF'$i;
-			else
-				pathMap[Persistence]="NA";
-			fi
-			if [ ${props["deploy.action.XMPersister"]} = true ]
-			then
-				logger 'Found deploy.action.XMPersister=true for HF'$i;
-				 pathMap[XMPersister]='HF'$i;
-			else
-				 pathMap[XMPersister]="NA";
-			fi
 			if [ ${props["deploy.action.RedeyeDBScripts"]} = true ]
 			then
 				logger 'Found deploy.action.RedeyeDBScripts=true for HF'$i;
@@ -190,37 +161,38 @@ logger "Creating backup of Persistence";
 cp $customer/redeye/PersistenceServer/lib/PersistenceServer* backup/$date_time/;
 logger "Creating backup of XMLPersister";
 cp $customer/redeye/XMLPersister/lib/XMLPersister* backup/$date_time/;
+logger "Creating backup of BestEx";
+cp $customer/redeye/BestEx/lib/BestEx* backup/$date_time/;
+logger "Creating backup of CORTEX";
+cp $customer/redeye/CORTEX/lib/CORTEX* backup/$date_time/;
 
 echo "Deploying jars...";
-if [ ${pathMap[AnalyticsContainer]} != "NA" ]
-	then
+
 	logger "Deploying AnalyticsContainer jar";
-	cp ${pathMap[AnalyticsContainer]}/AnalyticsContainer/AnalyticsContainer* $customer/redeye/AnalyticsContainer/package/;
-fi
+	cp Artifact/AnalyticsContainer/AnalyticsContainer* $customer/redeye/AnalyticsContainer/package/;
+  chmod 755 $customer/redeye/AnalyticsContainer/package/;
 
-if [ ${pathMap[ClientAdapter]} != "NA" ]
-	then
-	logger "Moving ClientAdapter jar to backup to avoid multiple files in lib directory";
-	mv $customer/redeye/lib/ClientAdapterToolkit* backup/$date_time/;
-	mv $customer/redeye/ClientAdapterToolkit/lib/ClientAdapterToolkit* backup/$date_time/;
-
-        logger "Deploying ClientAdapter jar to ClientAdapterToolkit lib and Redeye lib directory"
-	cp ${pathMap[ClientAdapter]}/ClientAdapter/ClientAdapterToolkit* $customer/redeye/ClientAdapterToolkit/lib/;
-	cp ${pathMap[ClientAdapter]}/ClientAdapter/ClientAdapterToolkit* $customer/redeye/lib/;
+  logger "Deploying ClientAdapter jar to ClientAdapterToolkit lib and Redeye lib directory"
+	cp Artifact/ClientAdapter/ClientAdapterToolkit* $customer/redeye/ClientAdapterToolkit/lib/;
+	cp Artifact/ClientAdapter/ClientAdapterToolkit* $customer/redeye/lib/;
 	chmod 755 $customer/redeye/lib/ClientAdapterToolkit*;
-fi
 
-if [ ${pathMap[Persistence]} != "NA" ]
-	then
 	logger "Deploying Persistence jar";
-	cp ${pathMap[Persistence]}/Persistence/PersistenceServer* $customer/redeye/PersistenceServer/lib/;
-fi
+	cp Artifact/Persistence/PersistenceServer* $customer/redeye/PersistenceServer/lib/;
+  chmod 755 $customer/redeye/PersistenceServer/lib/;
 
-if [ ${pathMap[XMPersister]} != "NA" ]
-	then
 	logger "Deploying XMLPersister jar";
-	cp ${pathMap[XMPersister]}/XMLPersister/XMLPersister-* $customer/redeye/XMLPersister/lib/;
-fi
+	cp  Artifact/XMLPersister/XMLPersister-* $customer/redeye/XMLPersister/lib/;
+  chmod 755 $customer/redeye/XMLPersister/lib/;
+
+	logger "Deploying BestEx jar";
+	cp Artifact/BestEx/BestEx-* $customer/redeye/BestEx/lib/;
+  chmod 755 $customer/redeye/BestEx/lib/;
+
+	logger "Deploying CORTEX jar";
+	cp Artifact/CORTEX/CORTEX-* $customer/redeye/CORTEX/lib/;
+  chmod 755 $customer/redeye/CORTEX/lib/;
+
 if [ ${pathMap[ImportPlatformLists]} != "NA" ]
         then
         logger "Importing latest PlatformList CSVs";
