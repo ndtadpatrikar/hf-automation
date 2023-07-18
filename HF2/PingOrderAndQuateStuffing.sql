@@ -1,2 +1,0 @@
-update alertparametertype set RangeStart=1,ParameterDescription='Event Count threshold which is a number between 1 - 10000' where AlertTypeID=22 and SBParameterName='ESPO_EventCount';
-update alertparametertype set RangeStart=1,ParameterDescription='Event Count threshold which is a number between 1 - 100' where AlertTypeID=21 and SBParameterName='ESQS_EventCount';
