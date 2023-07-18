@@ -1,0 +1,16 @@
+Resource Strings deployment started
+
+Taking backup of resource strings  from ActOne to CSV
+Successfully logged in to node: http://10.223.69.59:8080/RCM.
+1849 Resource Strings exported
+Process completed.
+Finished taking backup of reource strings from ActOne to CSV file
+
+Started importing reource strings from CSV files to RCM
+start importing file: CC_EC.csv
+Successfully logged in to node: http://10.223.69.59:8080/RCM.
+9 out of 9 Resource Strings were successfully imported.
+Process completed.
+
+Finished Importing reource strings from CSV files to RCM.
+Reource strings deployment finished successfully.

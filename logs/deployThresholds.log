@@ -1,0 +1,45 @@
+Thresholds deployment started
+
+Taking backup of thresholds from ActOne DB to CSV
+Start Exporting thresholds: From List MSC Settings Configuration into CSV: MSC_Settings_Configuration.csv
+Successfully logged in to node: http://10.223.69.59:8080/RCM.
+List exported
+Process completed.
+Start Exporting thresholds: From List MSC Internal Thresholds into CSV: MSC_Internal_Thresholds.csv
+Successfully logged in to node: http://10.223.69.59:8080/RCM.
+List exported
+Process completed.
+Start Exporting thresholds: From List MSC Internal Settings Configuration into CSV: MSC_Internal_Settings_Configuration.csv
+Successfully logged in to node: http://10.223.69.59:8080/RCM.
+List exported
+Process completed.
+Start Exporting thresholds: From List MSC Default Thresholds into CSV: MSC_Default_Thresholds.csv
+Successfully logged in to node: http://10.223.69.59:8080/RCM.
+List exported
+Process completed.
+Start Exporting thresholds: From List MSC Alert Activation Thresholds into CSV: MSC Alert Activation Thresholds.csv
+Successfully logged in to node: http://10.223.69.59:8080/RCM.
+List exported
+Process completed.
+Finished taking backup of thresholds from ActOne to CSV files
+
+Importing thresholds from CSV files to RCM
+start importing file: MSC Settings Configuration.csv into list: MSC_settingsConfiguration
+Successfully logged in to node: http://10.223.69.59:8080/RCM.
+List imported
+Process completed.
+start importing file: MSC Internal Settings Configuration.csv into list: MSC_internalSettingsConfiguration
+Successfully logged in to node: http://10.223.69.59:8080/RCM.
+List imported
+Process completed.
+start importing file: MSC Internal Thresholds.csv into list: MSC_internalThresholds
+Successfully logged in to node: http://10.223.69.59:8080/RCM.
+List imported
+Process completed.
+start importing file: MSC WashTrade Default Thresholds.csv into list: MSC Thresholds
+Successfully logged in to node: http://10.223.69.59:8080/RCM.
+List imported
+Process completed.
+
+Finished Importing thresholds from CSV files to RCM.
+Thresholds deployment finished successfully.
