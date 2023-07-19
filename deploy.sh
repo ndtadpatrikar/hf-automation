@@ -278,6 +278,7 @@ if [ ${pathMap[ImportPlatformLists]} != "NA" ]
 fi
 
 
+
 logger "Creating dump of alertparametertype table";
 mysqldump -u${deploy_db_user} -p${deploy_db_password} -h${deploy_db_host} -P${deploy_db_port}  ${deploy_db_databaseName} alertparametertype > backup/$date_time/alertparametertype.sql
 
@@ -289,16 +290,30 @@ logger "Running SQL scripts only if its applicable.";
 for((i=$from_HF;i<=$to_HF;i++))
 do
 		echo 'HF'$i;
-		dirpath='HF'$i/RedeyeDBScripts;
+		dirpath='HF'$i/;
 		for dir in $dirpath/*; do
 		logger "Checking file extension for "$dir" And If db Scripts to run";
-		if [[ $dir == *sql ]] && [pathMap[RedeyeDBScripts]="NA" ];
+		if [[ $dir == *sql ]] ;
 		then
 			logger "Running SQL scripts for "$dir;
 			mysql -u${deploy_db_user} -p${deploy_db_password} -h${deploy_db_host} -P${deploy_db_port}  ${deploy_db_databaseName} -A < $dir > results_file;
 			mv $dir $dir'executed'
-		fi	
-        done
+		fi
+		logger "Running apf scripts only if its applicable.";
+    logger "Checking file extension for "$dir" And is apf going to run";
+    if [[ $dir == *apf ]] ;
+    then
+    logger "Running apf scripts  for "$dir;
+    ./import.sh -acm=$v_url -user=$rcm_user -password=$rcm_password -auth_mode=internal -filename=$dir -importPolicy=Selective -brokenlinkpolicy=Permissive
+    fi
+    logger "Running xml files only if its applicable.";
+    logger "Checking file extension for "$dir" And is xml going to run";
+    if [[ $dir == *xml ]] ;
+    then
+    logger "Running apf scripts  for "$dir;
+    ./import_virtualfs.sh -rcm=$v_url -user=$rcm_user -password=$rcm_password -auth_mode=internal -filename=$dir -virtual_path=app_gui_items
+    fi
+    done
 done
 for((i=$from_HF;i<=$to_HF;i++))
 do
