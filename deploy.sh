@@ -153,46 +153,70 @@ echo  "Finished Exporting thresholds from ActOne to CSV files" | tee -a $DEPLOY_
 ###########################################################################
 
 logger "Creating backup of AnalyticsContainer";
+cksumBackupSBD=cksum $customer/redeye/AnalyticsContainer/package/AnalyticsContainer* | awk '{print $1}'
+ArtifactSBD=cksum Artifact/AnalyticsContainer/AnalyticsContainer* | awk '{print $1}'
 cp $customer/redeye/AnalyticsContainer/package/AnalyticsContainer* backup/$date_time/;
 logger "Creating backup of ClientAdapterToolkit";
+BackupClientAdapterToolkitlib=cksum $customer/redeye/ClientAdapterToolkit/lib/ClientAdapterToolkit* | awk '{print $1}'
+ArtifactClientAdapterToolkit=cksum Artifact/ClientAdapter/ClientAdapterToolkit* | awk '{print $1}'
 cp $customer/redeye/ClientAdapterToolkit/lib/ClientAdapterToolkit* backup/$date_time/;
 cp $customer/redeye/lib/ClientAdapterToolkit* backup/$date_time/;
 logger "Creating backup of Persistence";
+cksumbackupPersistance=cksum $customer/redeye/PersistenceServer/lib/PersistenceServer* | awk '{print $1}'
+ArtifactPersistance=cksum Artifact/Persistence/PersistenceServer* | awk '{print $1}'
 cp $customer/redeye/PersistenceServer/lib/PersistenceServer* backup/$date_time/;
 logger "Creating backup of XMLPersister";
+cksumbackupXMLPersister=cksum $customer/redeye/XMLPersister/lib/XMLPersister* | awk '{print $1}'
+ArtifactXMLPersister=cksum Artifact/XMLPersister/XMLPersister* | awk '{print $1}'
 cp $customer/redeye/XMLPersister/lib/XMLPersister* backup/$date_time/;
 logger "Creating backup of BestEx";
+cksumBackupBestEx=cksum $customer/redeye/BestEx/lib/BestEx* | awk '{print $1}'
+ArtifactBestEx=cksum Artifact/BestEx/BestEx* | awk '{print $1}'
 cp $customer/redeye/BestEx/lib/BestEx* backup/$date_time/;
 logger "Creating backup of CORTEX";
+cksumbackupcortex=cksum $customer/redeye/CORTEX/lib/CORTEX* | awk '{print $1}'
+Artifactcortex=cksum Artifact/CORTEX/CORTEX* | awk '{print $1}'
 cp $customer/redeye/CORTEX/lib/CORTEX* backup/$date_time/;
 
 echo "Deploying jars...";
 
 	logger "Deploying AnalyticsContainer jar";
+	if(cksumBackupSBD!=ArtifactSBD)
+	then
 	cp Artifact/AnalyticsContainer/AnalyticsContainer* $customer/redeye/AnalyticsContainer/package/;
   chmod 755 $customer/redeye/AnalyticsContainer/package/;
-
+  fi
+  if(BackupClientAdapterToolkitlib!=ArtifactClientAdapterToolkit)
+	then
   logger "Deploying ClientAdapter jar to ClientAdapterToolkit lib and Redeye lib directory"
 	cp Artifact/ClientAdapter/ClientAdapterToolkit* $customer/redeye/ClientAdapterToolkit/lib/;
 	cp Artifact/ClientAdapter/ClientAdapterToolkit* $customer/redeye/lib/;
 	chmod 755 $customer/redeye/lib/ClientAdapterToolkit*;
-
+	fi
+  if(cksumbackupPersistance!=ArtifactPersistance)
+	then
 	logger "Deploying Persistence jar";
 	cp Artifact/Persistence/PersistenceServer* $customer/redeye/PersistenceServer/lib/;
   chmod 755 $customer/redeye/PersistenceServer/lib/;
-
+  fi
+  if(cksumbackupXMLPersister!=ArtifactXMLPersister)
+	then
 	logger "Deploying XMLPersister jar";
 	cp  Artifact/XMLPersister/XMLPersister-* $customer/redeye/XMLPersister/lib/;
   chmod 755 $customer/redeye/XMLPersister/lib/;
-
+  fi
+  if(cksumBackupBestEx!=ArtifactBestEx)
+	then
 	logger "Deploying BestEx jar";
 	cp Artifact/BestEx/BestEx-* $customer/redeye/BestEx/lib/;
   chmod 755 $customer/redeye/BestEx/lib/;
-
+  fi
+  if(cksumbackupcortex!=Artifactcortex)
+	then
 	logger "Deploying CORTEX jar";
 	cp Artifact/CORTEX/CORTEX-* $customer/redeye/CORTEX/lib/;
   chmod 755 $customer/redeye/CORTEX/lib/;
-
+  fi
 if [ ${pathMap[ImportPlatformLists]} != "NA" ]
         then
         logger "Importing latest PlatformList CSVs";
@@ -271,7 +295,7 @@ do
 		if [[ $dir == *sql ]] && [pathMap[RedeyeDBScripts]="NA" ];
 		then
 			logger "Running SQL scripts for "$dir;
-			mysql -u${deploy_db_user} -p${deploy_db_password} -h${deploy_db_host} -P${deploy_db_port}  ${deploy_db_databaseName} -A < $dir;
+			mysql -u${deploy_db_user} -p${deploy_db_password} -h${deploy_db_host} -P${deploy_db_port}  ${deploy_db_databaseName} -A < $dir > results_file;
 			mv $dir $dir'executed'
 		fi	
         done
