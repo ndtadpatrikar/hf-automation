@@ -1,0 +1,7 @@
+INSERT INTO alertparametertype(ParameterTypeID,AlertTypeID,ParameterName,ValueDataType,RangeStart,RangeEnd,DefaultValue,SBParameterName,AuditID,OverrideTypeCode,TypeOfParameter,Source,ParameterVisibility,ParameterDescription) VALUES 
+(4798,22,'Use Enhanced Mode','Bool','0','1','0','ESPO_EnhancedMode',3,'N','Extract value from tuple','AlertSchema.AlertParameters','Y','Use Enhanced Mode threshold which is a boolean'),
+(4799,107,'Use Enhanced Mode','Bool','0','1','0','OPTESPO_EnhancedMode',3,'N','Extract value from tuple','AlertSchema.AlertParameters','Y','Use Enhanced Mode threshold which is a boolean'),
+(4800,62,'Use Enhanced Mode','Bool','0','1','0','FUTESPO_EnhancedMode',3,'N','Extract value from tuple','AlertSchema.AlertParameters','Y','Use Enhanced Mode threshold which is a boolean'),
+(4801,21,'Order Count New Calculation','Bool','0','1','0','ESQS_Order_Count_New_Calculation',3,'N','Extract value from tuple','AlertSchema.AlertParameters','Y','Order Count New Calculation threshold which is a boolean'),
+(4802,106,'Order Count New Calculation','Bool','0','1','0','OPTESQS_Order_Count_New_Calculation',3,'N','Extract value from tuple','AlertSchema.AlertParameters','Y','Order Count New Calculation threshold which is a boolean'),
+(4803,61,'Order Count New Calculation','Bool','0','1','0','FUTESQS_Order_Count_New_Calculation',3,'N','Extract value from tuple','AlertSchema.AlertParameters','Y','Order Count New Calculation threshold which is a boolean');
